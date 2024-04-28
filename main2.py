@@ -30,7 +30,7 @@ audio_file = st.file_uploader("Upload Audio ou video", type=["wav","mp3","ogg","
 
 if audio_file is not None:
     # Importing model -- base(74M parameter)
-    model = whisper.load_model("medium")
+    model = whisper.load_model("base")
     st.info("Whisper model loaded")
 
     # Playing audio file
