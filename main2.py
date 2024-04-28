@@ -47,8 +47,8 @@ if audio_file is not None:
                 transcription = model.transcribe(temp.name, fp16=True)
                 st.success("Transcrição Completada")
                 with st.expander("Visualizar"):
-                    st.markdown(transcription["text"],height=200)
-                    txt = st.text_area(transcription["text"])
+                    st.markdown(transcription["text"])
+                    txt = st.text_area(transcription["text"],height=200)
                     st.code(txt)
                     
 
