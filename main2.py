@@ -51,8 +51,7 @@ if audio_file is not None:
                 # Salvar a transcrição em um arquivo de texto
                 with open("transcript.txt", "w") as f:
                     f.write(transcription["text"])
-                with open("transcript.str", "w") as g:
-                    g.write(transcription["text"])    
+               
 
                 # Fornecer um botão de download para a transcrição
                 st.download_button("Download Transcript", transcription["text"])
