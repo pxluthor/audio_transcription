@@ -39,7 +39,7 @@ if audio_file is not None:
 
     # Generating transcript
     if st.button("TRANSCREVER"):
-        with st.spinner("Processando áudio... 💫"):
+        with st.spinner("Processando Audio... 💫"):
             with NamedTemporaryFile(suffix=".mp3", delete=False) as temp:
                 temp.write(audio_file.read())
                 temp.close()  # Fechar o arquivo temporário antes de reabri-lo
