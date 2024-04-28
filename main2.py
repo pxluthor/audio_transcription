@@ -2,7 +2,7 @@ import streamlit as st
 import whisper
 from tempfile import NamedTemporaryFile
 
-st.set_page_config(page_title="whisper ASR", page_icon="musical_note",layout="wide")
+st.set_page_config(page_title="LESTE_TRANSCRIPTION", page_icon="musical_note",layout="wide")
 
 # CSS
 hide_st_style = """
