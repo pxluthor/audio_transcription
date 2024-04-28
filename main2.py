@@ -30,27 +30,30 @@ audio_file = st.file_uploader("Upload Audio ou video", type=["wav","mp3","ogg","
 
 if audio_file is not None:
     # Importing model -- base(74M parameter)
-    model = whisper.load_model("base")
+    model = whisper.load_model("medium")
     st.info("Whisper model loaded")
 
     # Playing audio file
-    st.header("Play audio file:")
+    st.header("Play áudio:")
     st.audio(audio_file)
 
     # Generating transcript
-    if st.button("Generate Transcript"):
-        with st.spinner("Processing Audio ... 💫"):
+    if st.button("TRANSCREVER"):
+        with st.spinner("Processando áudio... 💫"):
             with NamedTemporaryFile(suffix=".mp3", delete=False) as temp:
                 temp.write(audio_file.read())
                 temp.close()  # Fechar o arquivo temporário antes de reabri-lo
-                st.success("Transcribing Audio/video")
+                st.success("Realizando a transcrição")
                 transcription = model.transcribe(temp.name, fp16=True)
-                st.success("Transcription Complete")
+                st.success("Transcrição Completada")
                 st.markdown(transcription["text"])
 
                 # Salvar a transcrição em um arquivo de texto
                 with open("transcript.txt", "w") as f:
                     f.write(transcription["text"])
+                with open("transcript.str", "w") as g:
+                    g.write(transcription["text"])    
 
                 # Fornecer um botão de download para a transcrição
                 st.download_button("Download Transcript", transcription["text"])
+                st.download_button("Download Transcript STR", transcription["text"])
