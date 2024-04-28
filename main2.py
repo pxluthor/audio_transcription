@@ -49,6 +49,7 @@ if audio_file is not None:
                 
                 with st.expander("Visualizar texto"):
                     st.markdown(transcription['text'])
+                    st.code(transcription['text'])
                     st.markdown("---")
 
                     
