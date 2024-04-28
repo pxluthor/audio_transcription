@@ -46,8 +46,11 @@ if audio_file is not None:
                 st.success("Realizando a transcrição")
                 transcription = model.transcribe(temp.name, fp16=True)
                 st.success("Transcrição Completada")
-                st.markdown(transcription["text"])
-                st.code(transcription["text"])
+                with st.expander("Visualizar"):
+                    st.markdown(transcription["text"])
+                    st.code(transcription["text"])
+                    st.text_area(transcription["text"], height=200)
+
 
                 # Salvar a transcrição em um arquivo de texto
                 with open("transcript.txt", "w") as f:
