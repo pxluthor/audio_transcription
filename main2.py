@@ -48,8 +48,7 @@ if audio_file is not None:
                 st.success("Transcrição Completada")
                 with st.expander("Visualizar"):
                     st.markdown(transcription["text"])
-                    txt = st.text_area(transcription["text"],height=200)
-                    st.code(txt)
+                    st.code(transcription["text"])
                     
 
 
