@@ -44,7 +44,7 @@ if audio_file is not None:
                 temp.write(audio_file.read())
                 temp.close()  # Fechar o arquivo temporário antes de reabri-lo
                 st.success("Realizando a transcrição")
-                transcription = model.transcribe(temp.name, fp16=True)
+                transcription = model.transcribe(temp.name, fp16=False)
                 st.success("Transcrição Completada")
                 
                 with st.expander("Visualizar texto"):
