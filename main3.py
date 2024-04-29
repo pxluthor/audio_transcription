@@ -22,13 +22,6 @@ if audio_file is not None:
 # Button to start transcription
 if st.button('Transcribe Audio') and audio_file:
     with st.spinner("Processando Audio... 💫"):
-        # Remove files with specified extensions
-        for ext in extensions:
-            for filename in os.listdir("arquivos"):
-                if filename.endswith(f".{ext}"):
-                    filepath = os.path.join("arquivos", filename)
-                    os.remove(filepath)
-
         # Command to be executed
         command = ["whisper", "-", "--model", "medium", "--language", "pt"]
 
@@ -42,15 +35,13 @@ if st.button('Transcribe Audio') and audio_file:
         # Move the generated transcription files to BytesIO
         generated_files = {}
         for ext in extensions:
-            generated_file_name = f"{nome_original}.{ext}"
-            generated_files[ext] = BytesIO()
-            generated_files[ext].write(output_bytes.getvalue())
+            generated_files[ext] = BytesIO(output_bytes.getvalue())
 
         # Display download buttons for the transcribed files
         for ext in extensions:
             if ext in generated_files:
                 with st.expander(f"Arquivo {ext.upper()}"):
                     st.markdown(f"**Download {nome_original}.{ext}:**")
-                    st.download_button(label=f"Download {ext.upper()}", data=generated_files[ext].getvalue(), file_name=f"{nome_original}.{ext}", mime=None)
+                    st.download_button(label=f"Download {ext.upper()}", data=generated_files[ext], file_name=f"{nome_original}.{ext}", mime=None)
                     generated_files[ext].seek(0)
                     st.text_area(f"Conteúdo do arquivo {ext.upper()}", value=generated_files[ext].read().decode('utf-8'), height=200)
