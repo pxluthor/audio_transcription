@@ -18,8 +18,16 @@ if st.sidebar.button("TRANSCREVER"):
                 f.write(audio_file.read())
             # Passar o caminho do arquivo temporário para o Whisper
             transcription = model.transcribe("temp_audio.mp3")
+
             st.sidebar.success("Transcrição completada!")
-            st.markdown(transcription["text"])
+            with st.expander("Visualizar texto"):
+                st.markdown(transcription["text"])
+                st.code(transcription["text"])
+
+            with st.expander("Visualizar Descrição"):
+                    for segment in transcription['segments']:
+                        st.markdown(f"**Tempo:** {segment['start']} - {segment['end']}")
+                        st.markdown(f"- {segment['text']}")
             # Remover o arquivo temporário após o uso
             os.remove("temp_audio.mp3")
         except RuntimeError as e:
