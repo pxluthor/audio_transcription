@@ -1,60 +1,32 @@
-import streamlit as st 
-import subprocess
+import streamlit as st
+import whisper
 import os
 
-st.title('TRANSCRIPTION APP')
-extensions = ['json', 'srt', 'txt', 'vtt', 'tsv']
+st.title("Audio APP")
 
-# Create a directory to save uploaded files if it doesn't exist
-#if not os.path.exists("arquivos"):
-#    os.makedirs("arquivos")
+audio_file = st.file_uploader("Upload Audio", type=["wav", "mp3", "m4a"], key="audio_uploader")
 
-# Upload the audio file
-audio_file = st.file_uploader('Upload Audio', type=['wav', 'mp3', 'mp4a'])
+model = whisper.load_model("base")
+st.text("Whisper Model Loaded")
 
-# Verify if a file is uploaded
-if audio_file is not None:
-    nome_original = os.path.splitext(audio_file.name)[0]
-    # Save the uploaded file to disk with the original name
-    audio_path = os.path.join("arquivos", audio_file.name)
-    with open(audio_path, "wb") as f:
-        f.write(audio_file.getbuffer())
+if st.sidebar.button("TRANSCREVER"):
+    if audio_file is not None:
+        st.sidebar.success("Transcrevendo áudio...")
+        try:
+            # Salvar o arquivo temporário
+            with open("temp_audio.mp3", "wb") as f:
+                f.write(audio_file.read())
+            # Passar o caminho do arquivo temporário para o Whisper
+            transcription = model.transcribe("temp_audio.mp3")
+            st.sidebar.success("Transcrição completada!")
+            st.markdown(transcription["text"])
+            # Remover o arquivo temporário após o uso
+            os.remove("temp_audio.mp3")
+        except RuntimeError as e:
+            st.sidebar.error(f"Erro ao transcrever áudio: {e}")
+    else:
+        st.sidebar.error("Por favor, carregue um áudio")
 
-# Button to start transcription
-if st.button('Transcribe Audio') and audio_file:
-
-    # Remove files with specified extensions
-    for ext in extensions:
-        for filename in os.listdir("arquivos"):
-            if filename.endswith(f".{ext}"):
-                filepath = os.path.join("arquivos", filename)
-                os.remove(filepath)
-
-    # Command to be executed
-    command = ["whisper", audio_path, "--model", "medium", "--language", "pt"]
-
-    # Execute the command
-    subprocess.run(command)
-
-    # Remove the audio file after transcription
-    os.remove(audio_path)
-
-    # Move the generated transcription files to the 'arquivos' directory
-    for ext in extensions:
-        generated_file = f"{nome_original}.{ext}"
-        generated_file_path = os.path.join(os.getcwd(), generated_file)
-        if os.path.exists(generated_file_path):
-            os.rename(generated_file_path, os.path.join("arquivos", generated_file))
-
-    # Display download buttons for the transcribed files
-    for ext in extensions:
-        generated_file = f"{nome_original}.{ext}"
-        generated_file_path = os.path.join("arquivos", generated_file)
-        if os.path.exists(generated_file_path):
-            with st.expander(f"Arquivo {ext.upper()}"):
-                st.markdown(f"**Download {generated_file}:**")
-                with open(generated_file_path, 'rb') as file:
-                    st.download_button(label=f"Download {ext.upper()}", data=file, file_name=generated_file, mime=None)
-                with open(generated_file_path, 'r', encoding='utf-8') as file:
-                    st.text_area(f"Conteúdo do arquivo {ext.upper()}", value=file.read(), height=200)        
+st.sidebar.header("Reproduzir áudio")        
+st.sidebar.audio(audio_file)
 
