@@ -2,7 +2,8 @@ import streamlit as st
 import whisper
 import os
 
-st.title("Audio APP")
+st.title("🔉 Aplicativo de transcrição automática de áudio e vídeo 🔉")
+st.info('✨ Arquivos de áudio - WAV, MP3, MP4, OGG, WMA, AAC, FLAC, FLV | vídeo - MP4')
 
 audio_file = st.file_uploader("Upload Audio", type=["wav", "mp3", "m4a"], key="audio_uploader")
 
