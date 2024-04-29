@@ -22,7 +22,7 @@ background: rgb(6,36,39);
 """
 st.markdown(bg, unsafe_allow_html=True)
 
-st.title("🔉 Aplicativo de transcrição automática de áudio e vídeo 🔉")
+st.title("🔉 Aplicativo de transcrição automática de áudio e vídeo ")
 st.info('✨ Arquivos de áudio - WAV, MP3, MP4, OGG, WMA, AAC, FLAC, FLV | video - MP4')
 
 # Upload audio file with streamlit
